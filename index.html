@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#090909">
+<title>Music</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#090909;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:env(safe-area-inset-top) 0 100px}
+header{padding:20px 18px 12px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:27px;font-weight:800;letter-spacing:-1px}
+.logo span{color:#ff375f}
+.icon{background:#222;border:0;color:white;border-radius:50%;width:43px;height:43px;font-size:20px}
+main{padding:0 18px}
+h1{font-size:29px;margin:24px 0 18px}
+h2{font-size:20px;margin:27px 0 15px}
+.search{display:flex;align-items:center;background:#202020;border-radius:13px;padding:0 14px;margin:8px 0 20px}
+.search input{background:transparent;border:0;outline:0;color:white;font-size:16px;padding:15px 10px;width:100%;min-width:0}
+.chips{display:flex;gap:9px;overflow-x:auto;padding-bottom:5px}
+.chip{white-space:nowrap;background:#252525;border:1px solid #414141;color:white;border-radius:20px;padding:9px 16px;font-size:14px}
+.chip.active{background:#fff;color:#111}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.card{min-width:0;cursor:pointer}
+.art{aspect-ratio:1;background:linear-gradient(135deg,#303030,#151515);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:48px;position:relative;overflow:hidden}
+.art:after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,rgba(0,0,0,.4))}
+.card p{margin:9px 0 3px;font-weight:650;font-size:15px;overflow-wrap:anywhere}
+.card small{color:#aaa;font-size:13px}
+.banner{background:linear-gradient(120deg,#44202d,#202020 65%);padding:18px;border-radius:15px;margin-top:22px}
+.banner strong{font-size:18px}
+.banner p{color:#ddd;font-size:13px;line-height:1.5}
+.track{position:fixed;bottom:0;left:0;right:0;padding:10px 12px calc(9px + env(safe-area-inset-bottom));background:#252525;border-top:1px solid #414141;z-index:5}
+.tracktop{display:flex;align-items:center;gap:11px}
+.cover{width:45px;height:45px;flex-shrink:0;background:#414141;border-radius:6px;display:grid;place-items:center;font-size:24px}
+.info{min-width:0;flex:1}
+.info strong,.info small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.info strong{font-size:14px}
+.info small{font-size:12px;color:#bbb;margin-top:4px}
+.controls{display:flex;align-items:center;gap:15px}
+.controls button{border:0;background:none;color:#fff;font-size:23px;padding:5px}
+.note{color:#aaa;font-size:12px;line-height:1.5;margin-top:20px}
+#status{color:#ff7189;font-size:13px;margin-top:12px}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><span>♫</span> music</div>
+  <button class="icon" id="profile" aria-label="Профиль">●</button>
+</header>
+<main>
+  <h1>Слушай своё 🎧</h1>
+  <div class="search">
+    <span>⌕</span>
+    <input id="query" type="search" placeholder="Песни, клипы и исполнители">
+    <button class="icon" id="go" aria-label="Искать">→</button>
+  </div>
+  <div class="chips">
+    <button class="chip active">Для тебя</button>
+    <button class="chip">Клипы</button>
+    <button class="chip">Плейлисты</button>
+    <button class="chip">Новинки</button>
+  </div>
+  <h2>Быстрый выбор</h2>
+  <div class="grid">
+    <div class="card" data-title="Популярные хиты" data-artist="Подборка">
+      <div class="art">🎤</div><p>Популярные хиты</p><small>Музыкальная подборка</small>
+    </div>
+    <div class="card" data-title="Музыка для отдыха" data-artist="Подборка">
+      <div class="art">🌙</div><p>Музыка для отдыха</p><small>Спокойное настроение</small>
+    </div>
+    <div class="card" data-title="Энергия дня" data-artist="Подборка">
+      <div class="art">⚡</div><p>Энергия дня</p><small>Больше ритма</small>
+    </div>
+    <div class="card" data-title="Любимые клипы" data-artist="Подборка">
+      <div class="art">▶️</div><p>Любимые клипы</p><small>Музыка и видео</small>
+    </div>
+  </div>
+  <div class="banner">
+    <strong>Твоя музыка. Твой стиль.</strong>
+    <p>Это первая версия интерфейса. Поиск по YouTube, вход в аккаунт и воспроизведение будут подключаться отдельно.</p>
+  </div>
+  <div id="status" role="status" aria-live="polite"></div>
+  <p class="note">Прототип интерфейса · Сейчас карточки демонстрационные, воспроизведение ещё не подключено.</p>
+</main>
+<div class="track">
+  <div class="tracktop">
+    <div class="cover">♫</div>
+    <div class="info"><strong id="trackname">Выбери музыку</strong><small id="artist">Твой будущий плеер</small></div>
+    <div class="controls">
+      <button id="prev" aria-label="Предыдущий трек">⏮</button>
+      <button id="play" aria-label="Воспроизвести">▶</button>
+      <button id="next" aria-label="Следующий трек">⏭</button>
+    </div>
+  </div>
+</div>
+<script>
+const status=document.getElementById('status');
+function selectTrack(title,artist){
+ document.getElementById('trackname').textContent=title;
+ document.getElementById('artist').textContent=artist;
+ status.textContent='Выбрано: '+title+'. Источник музыки ещё не подключён.';
+}
+document.querySelectorAll('.card').forEach(card=>{
+ card.addEventListener('click',()=>selectTrack(card.dataset.title,card.dataset.artist));
+});
+document.getElementById('go').addEventListener('click',()=>{
+ const q=document.getElementById('query').value.trim();
+ if(!q){status.textContent='Сначала введи название песни или исполнителя.';return}
+ selectTrack(q,'Поисковый запрос');
+ status.textContent='Запрос подготовлен: '+q+'. Онлайн-поиск подключим следующим этапом.';
+});
+document.getElementById('query').addEventListener('keydown',e=>{
+ if(e.key==='Enter')document.getElementById('go').click();
+});
+document.querySelectorAll('.chip').forEach(chip=>{
+ chip.addEventListener('click',()=>{
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active');
+  status.textContent='Выбран раздел: '+chip.textContent+'.';
+ });
+});
+document.getElementById('play').addEventListener('click',()=>{
+ status.textContent='Воспроизведение пока не подключено.';
+});
+document.getElementById('prev').addEventListener('click',()=>{status.textContent='Предыдущий трек пока недоступен.'});
+document.getElementById('next').addEventListener('click',()=>{status.textContent='Следующий трек пока недоступен.'});
+document.getElementById('profile').addEventListener('click',()=>{
+ status.textContent='Вход в Google добавим после настройки разрешённой авторизации.';
+});
+</script>
+</body>
+</html>
